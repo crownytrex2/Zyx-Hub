@@ -9,4 +9,4 @@
 
 [GET KEY](https://direct-link.net/1359736/3yjRLcZO28AP)
 
-```loadstring(game:HttpGet("https://raw.githubusercontent.com/crownytrex2/Zyx-Hub/refs/heads/main/Script"))()```
+[GET SCRIPT](https://direct-link.net/1359736/CO10VoXG24jZ)
