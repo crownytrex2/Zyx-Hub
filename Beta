@@ -1,1 +1,79 @@
+-- Fully Obfuscated Crowny Utility GUI
+local a=game.Players.LocalPlayer;local b=a:GetMouse()
+local c=a.Character or a.CharacterAdded:Wait();local d=c:WaitForChild("Humanoid")
+local e=game:GetService"UserInputService";local f=game:GetService"RunService"
+local g=game:GetService"HttpService";local function decodeKey(k)
+	local b='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+	k = k:gsub('[^'..b..'=]', '')
+	return (k:gsub('.', function(x)
+		if (x == '=') then return '' end
+		local r,f='',(b:find(x)-1)
+		for i=6,1,-1 do r=r..(f%2^i - f%2^(i-1) > 0 and '1' or '0') end
+		return r
+	end):gsub('%d%d%d?%d?%d?%d?%d?%d?', function(x)
+		if (#x ~= 8) then return '' end
+		local c=0
+		for i=1,8 do c=c + (x:sub(i,i)=='1' and 2^(8-i) or 0) end
+		return string.char(c)
+	end))
+end
 
+local h = decodeKey("V0VORUVEU1BFRUQ=")
+;local i="crowny_settings.json"
+local j,k,l,m,n=false,false,false,false,false
+
+local function o(p)for _,q in ipairs(p)do return true end return false end
+
+local u=Instance.new"ScreenGui";u.Name="X";u.Parent=game:GetService"CoreGui";u.ResetOnSpawn=false
+local v=Instance.new"Frame";v.Parent=u;v.Size=UDim2.new(0,380,0,400);v.Position=UDim2.new(0.5,-190,0.5,-200)
+v.BackgroundColor3=Color3.fromRGB(30,30,30);v.BackgroundTransparency=.3;Instance.new("UICorner",v).CornerRadius=UDim.new(0,10)
+local w=Instance.new"UIGradient";w.Parent=v;w.Rotation=90;w.Color=ColorSequence.new{ColorSequenceKeypoint.new(0,Color3.fromRGB(0,170,255)),ColorSequenceKeypoint.new(1,Color3.fromRGB(170,0,255))}
+
+local x=Instance.new"TextLabel";x.Parent=u;x.Size=UDim2.new(0,200,0,30);x.Position=v.Position
+x.BackgroundColor3=Color3.fromRGB(30,30,30);x.BackgroundTransparency=.3;x.Text="GUI (K)";x.TextColor3=Color3.new(1,1,1);x.Visible=false
+Instance.new("UICorner",x).CornerRadius=UDim.new(0,6)
+
+-- Dragging
+do
+  local y,z,aa,ab
+  v.InputBegan:Connect(function(ac)if ac.UserInputType==Enum.UserInputType.MouseButton1 then y=true;z=ac.Position;aa=v.Position;ac.Changed:Connect(function()if ac.UserInputState==Enum.UserInputState.End then y=false end end)end end)
+  v.InputChanged:Connect(function(ac)if ac.UserInputType==Enum.UserInputType.MouseMovement then ab=ac end end)
+  e.InputChanged:Connect(function(ac)if y and ac==ab then local ad=ac.Position-z;v.Position=UDim2.new(aa.X.Scale,aa.X.Offset+ad.X,aa.Y.Scale,aa.Y.Offset+ad.Y);x.Position=v.Position end end)
+end
+
+local ae={"Main","Visual","Movement","Tools","Settings"};local af,ag={}
+for ah,ai in ipairs(ae)do
+  local aj=Instance.new"TextButton";aj.Parent=v;aj.Size=UDim2.new(0,70,0,25);aj.Position=UDim2.new(0,(ah-1)*74+5,0,10)
+  aj.Text=ai;aj.Font=Enum.Font.GothamBold;aj.TextColor3=Color3.new(1,1,1);aj.BackgroundColor3=Color3.fromRGB(60,60,60)
+  Instance.new("UICorner",aj).CornerRadius=UDim.new(0,6);af[ai]=aj
+  local ak=Instance.new"Frame";ak.Parent=v;ak.Name="T"..ai;ak.Size=UDim2.new(1,0,1,-45);ak.Position=UDim2.new(0,0,0,45)
+  ak.BackgroundTransparency=1;ak.Visible=(ai=="Main");ag[ai]=ak
+  aj.MouseButton1Click:Connect(function()for _,al in pairs(ag)do al.Visible=false end;for _,am in pairs(af)do am.BackgroundColor3=Color3.fromRGB(60,60,60)end;ak.Visible=true;aj.BackgroundColor3=Color3.fromRGB(100,150,200)end)
+end
+
+-- UI Elements
+local an=Instance.new"TextBox";an.Parent=ag.Main;an.PlaceholderText="Enter Key";an.Size=UDim2.new(0.8,0,0,30);an.Position=UDim2.new(0.1,0,0,10);Instance.new("UICorner",an).CornerRadius=UDim.new(0,6)
+local ao=Instance.new"TextButton";ao.Parent=ag.Main;ao.Text="Submit";ao.Size=UDim2.new(0.5,0,0,30);ao.Position=UDim2.new(0.25,0,0,50);Instance.new("UICorner",ao).CornerRadius=UDim.new(0,6);ao.Font=Enum.Font.GothamBold;ao.TextColor3=Color3.new(1,1,1);ao.BackgroundColor3=Color3.fromRGB(70,130,180)
+local ap=Instance.new"TextBox";ap.Parent=ag.Main;ap.PlaceholderText="Speed";ap.Size=UDim2.new(0.6,0,0,30);ap.Position=UDim2.new(0.1,0,0,100);Instance.new("UICorner",ap).CornerRadius=UDim.new(0,6);ap.Visible=false
+local aq=Instance.new"TextButton";aq.Parent=ag.Main;aq.Text="Toggle";aq.Size=UDim2.new(0.25,0,0,30);aq.Position=UDim2.new(0.75,10,0,100);Instance.new("UICorner",aq).CornerRadius=UDim.new(0,6);aq.Font=Enum.Font.GothamBold;aq.TextColor3=Color3.new(1,1,1);aq.BackgroundColor3=Color3.fromRGB(70,130,180);aq.Visible=false
+local ar=Instance.new"TextButton";ar.Parent=ag.Main;ar.Text="Invisible";ar.Size=UDim2.new(0.3,0,0,30);ar.Position=UDim2.new(0.05,0,0,150);Instance.new("UICorner",ar).CornerRadius=UDim.new(0,6);ar.Visible=false
+
+local au=Instance.new"TextButton";au.Parent=ag.Visual;au.Text="ESP";au.Size=UDim2.new(0.4,0,0,30);au.Position=UDim2.new(0.3,0,0,10);Instance.new("UICorner",au).CornerRadius=UDim.new(0,6);au.Visible=false
+local av=Instance.new"TextButton";av.Parent=ag.Movement;av.Text="Noclip";av.Size=UDim2.new(0.4,0,0,30);av.Position=UDim2.new(0.3,0,0,10);Instance.new("UICorner",av).CornerRadius=UDim.new(0,6);av.Visible=false
+local aw=Instance.new"TextButton";aw.Parent=ag.Movement;aw.Text="Fly";aw.Size=UDim2.new(0.4,0,0,30);aw.Position=UDim2.new(0.3,0,0,60);Instance.new("UICorner",aw).CornerRadius=UDim.new(0,6);aw.Visible=false
+
+local ax=Instance.new"TextBox";ax.Parent=ag.Tools;ax.PlaceholderText="Gear ID";ax.Size=UDim2.new(0.6,0,0,30);ax.Position=UDim2.new(0.1,0,0,10);Instance.new("UICorner",ax).CornerRadius=UDim.new(0,6);ax.Visible=false
+local ay=Instance.new"TextButton";ay.Parent=ag.Tools;ay.Text="Give";ay.Size=UDim2.new(0.25,0,0,30);ay.Position=UDim2.new(0.75,10,0,10);Instance.new("UICorner",ay).CornerRadius=UDim.new(0,6);ay.Font=Enum.Font.GothamBold;ay.TextColor3=Color3.new(1,1,1);ay.BackgroundColor3=Color3.fromRGB(120,200,120);ay.Visible=false
+
+-- Logic
+ao.MouseButton1Click:Connect(function()if an.Text==h then an:Destroy();ao:Destroy();ap.Visible=true;aq.Visible=true;ar.Visible=true;au.Visible=true;av.Visible=true;aw.Visible=true;ax.Visible=true;ay.Visible=true end end)
+aq.MouseButton1Click:Connect(function()local s=tonumber(ap.Text);if s then j=not j;d.WalkSpeed=j and s or 16;aq.Text=j and"ON" or"OFF" end end)
+ar.MouseButton1Click:Connect(function() m=not m;for _,b0 in pairs(c:GetDescendants())do if b0:IsA"BasePart"or b0:IsA"Decal"then b0.Transparency=m and 1 or 0 end end end)
+au.MouseButton1Click:Connect(function() k=not k;au.Text=k and"ESP (ON)"or"ESP";for _,pl in pairs(game.Players:GetPlayers())do if pl~=a and pl.Character and pl.Character:FindFirstChild("HumanoidRootPart")then local b1=pl.Character:FindFirstChild"ESP_Highlight"if k and not b1 then local h1=Instance.new"Highlight";h1.Parent=pl.Character;h1.Name="ESP_Highlight";h1.FillTransparency=1;h1.OutlineColor=Color3.fromRGB(255,0,0)elseif not k and b1 then b1:Destroy()end end end end)
+av.MouseButton1Click:Connect(function() l=not l;av.Text=l and"Noclip (ON)"or"Noclip"end)
+f.Stepped:Connect(function()if l then for _,p0 in pairs(c:GetDescendants())do if p0:IsA"BasePart"then p0.CanCollide=false end end end end)
+aw.MouseButton1Click:Connect(function() n=not n;aw.Text=n and"Fly (ON)"or"Fly"end)
+f.RenderStepped:Connect(function()if n then local cf=workspace.CurrentCamera.CFrame;local dir=Vector3.new((e:IsKeyDown(Enum.KeyCode.D)and 1 or 0)-(e:IsKeyDown(Enum.KeyCode.A)and 1 or 0),(e:IsKeyDown(Enum.KeyCode.Space)and 1 or 0)-(e:IsKeyDown(Enum.KeyCode.LeftShift)and 1 or 0),(e:IsKeyDown(Enum.KeyCode.S)and 1 or 0)-(e:IsKeyDown(Enum.KeyCode.W)and 1 or 0));if dir.Magnitude>0 then if not c.HumanoidRootPart:FindFirstChild"BodyPosition"then local bp, bg=Instance.new"BodyPosition",Instance.new"BodyGyro";bp.Parent=c.HumanoidRootPart;bg.Parent=c.HumanoidRootPart;bp.MaxForce=Vector3.new(9e9,9e9,9e9);bg.MaxTorque=Vector3.new(9e9,9e9,9e9)end;local bp=c.HumanoidRootPart:FindFirstChild"BodyPosition";local bg=c.HumanoidRootPart:FindFirstChild"BodyGyro";bp.Position=c.HumanoidRootPart.Position+cf:VectorToWorldSpace(dir.Unit*4);bg.CFrame=cf else for _,inst in ipairs(c.HumanoidRootPart:GetChildren())do if inst:IsA"BodyPosition"or inst:IsA"BodyGyro"then inst:Destroy()end end end end end)
+b.Button1Down:Connect(function()if e:IsKeyDown(Enum.KeyCode.LeftControl)or e:IsKeyDown(Enum.KeyCode.RightControl)then local pos=b.Hit and b.Hit.Position; if pos then c:MoveTo(pos+Vector3.new(0,3,0))end end end)
+ay.MouseButton1Click:Connect(function()local i0=tonumber(ax.Text);if i0 then local ok,t=pcall(function()return game:GetObjects("rbxassetid://"..i0)[1]end);if ok and t and t:IsA"Tool"then t.Parent=a.Backpack;ax.Text="OK!"end end end)
+e.InputBegan:Connect(function(a1,g1)if not g1 and a1.KeyCode==Enum.KeyCode.K then v.Visible=not v.Visible;x.Visible=not x.Visible end end)
