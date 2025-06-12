@@ -1,4 +1,21 @@
 
+✅ Included Features:
+- 🟢 Speed toggle
+
+- 🔐 Key system
+
+- 🖱️ Ctrl + click teleport
+
+- 🎯 ESP
+
+- 👻 Noclip
+
+- 🛸 Fly
+
+- 🧰 Tool giver with Gear ID input
+
+- 🖱️ Draggable UI
+
 | Feature  | Button            | Extra Info                           |Status
 | -------- | ----------------- | ------------------------------------ |-----------|
 | Speed    | Toggle Button     | Speed set in text box                |WORKING✅|
