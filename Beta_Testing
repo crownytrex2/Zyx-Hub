@@ -1,3 +1,1 @@
-## This is in proggress
-
-`loadstring(game:HttpGet("https://raw.githubusercontent.com/crownytrex2/Zyx-Hub/refs/heads/main/Beta_Testing"))()`
+--[[`loadstring(game:HttpGet("https://raw.githubusercontent.com/crownytrex2/Zyx-Hub/refs/heads/main/Beta_Testing"))()`]]--
